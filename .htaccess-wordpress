@@ -1,0 +1,53 @@
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.php$ - [L] 
+
+#START - WP Hide & Security Enhancer
+#WriteCheckString:1489014293_56908
+<IfModule mod_env.c>
+SetEnv HTTP_MOD_REWRITE On
+</IfModule>
+
+RewriteRule ^modules/(.+) /wp-content/plugins/$1 [L,QSA]
+
+RewriteRule ^assets/(.+) /wp-includes/$1 [L,QSA]
+
+RewriteRule ^site_uploads/(.+) /wp-content/uploads/$1 [L,QSA]
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteCond %{REQUEST_FILENAME} !wp-activate.php [NC]
+RewriteCond %{REQUEST_FILENAME} !wp-cron.php [NC]
+RewriteCond %{REQUEST_FILENAME} !wp-signup.php [NC]
+RewriteCond %{REQUEST_FILENAME} !wp-comments-post.php [NC]
+RewriteCond %{REQUEST_FILENAME} !wp-login.php [NC]
+RewriteRule ^wp-([a-z-])+.php /index.php [L]
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteRule ^readme.html /index.php [L]
+
+RewriteRule ^user-input.php /wp-comments-post.php [L,QSA]
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteRule ^license.txt /index.php [L]
+
+RewriteRule ^content/(.+) /wp-content/$1 [L,QSA]
+
+                            <FilesMatch "">
+                                <IfModule mod_headers.c>
+                                    Header unset X-Powered-By
+                                </IfModule>
+                            </FilesMatch>
+
+                            <FilesMatch "">
+                                <IfModule mod_headers.c>
+                                    Header unset X-Pingback
+                                </IfModule>
+                            </FilesMatch>
+#END - WP Hide & Security Enhancer
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+
+# END WordPress
